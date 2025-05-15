@@ -9,10 +9,10 @@
    pyhton example.py
    ```  
    &ensp;&ensp;This will generate `aes_key.bin` and `aes_key_enc.bin`, where `aes_key_enc.bin` is `aes_key.bin` encrypted by `kms_public.pem`  
-3. ```sh
+3. &ensp;&ensp;Activate the server
+   ```sh
    python kms_server.py
    ```
-   &ensp;&ensp;Activate the server  
 4. ```sh
    touch test.txt
    ```
