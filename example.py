@@ -92,6 +92,6 @@ def decrypt_file(input_path, output_path, key_path):
 # Encrypt any file
 generate_key_file('aes_key.bin')
 # encrypt_file('test.txt', 'test.enc', 'aes_key.bin')
-# encrypt_aes_key_with_kms_public('aes_key.bin', 'kms_public.pem', 'aes_key_enc.bin')
+encrypt_aes_key_with_kms_public('aes_key.bin', 'kms_public.pem', 'aes_key_enc.bin')
 # decrypt_aes_key_with_kms_private('aes_key_enc.bin', 'kms_private.pem', 'aes_key_dec.bin')
-decrypt_file('test.enc', 'plain.txt', 'aes_key_dec.bin')
+# decrypt_file('test.enc', 'plain.txt', 'aes_key_dec.bin')
