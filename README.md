@@ -1,6 +1,13 @@
 
 # Google-Client-Side-Encryption-Simulation  
 
+### Member (check: collaborator)
+- [x] 簡秉霖
+- [x] 尤茂為
+- [x] 何存益
+- [ ] 張育安
+- [ ] 蔡昌諭  
+
 ### Temporary structure
 ```
 client/
