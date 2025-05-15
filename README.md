@@ -1,5 +1,5 @@
 
-# Google-Client-Side-Encryption-Simulation  ccc
+# Google-Client-Side-Encryption-Simulation  
 
 ### Temporary structure
 ```
