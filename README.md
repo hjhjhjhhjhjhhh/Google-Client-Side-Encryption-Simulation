@@ -1,26 +1,26 @@
 # KMS_V1
 
 ### How to use
-1. ```sh
-   python kms_keygen.py
-   ```
-   &ensp;&ensp;This will generate `kms_private.pem` and `kms_public.pem` and `kms_api_key.txt`  
-2. ```sh
-   python example.py
-   ```  
-   &ensp;&ensp;This will generate `aes_key.bin` and `aes_key_enc.bin`, where `aes_key_enc.bin` is `aes_key.bin` encrypted by `kms_public.pem` 
-3. &ensp;&ensp;Activate the server
+1. Activate the server
    ```sh
    python kms_server.py
    ```
-4. Create test.txt and add some content to it  
+
+2. Create test.txt and add some content to it  
    ```sh
    touch test.txt && echo "hello world" > test.txt
    ```
+3. Activate the client
    ```sh
    python client.py
    ```
-   &ensp;&ensp;You should see `plain.txt` with identical content generated
+   &ensp;&ensp; Upon launch, enter your name to register or login.
+
+   &ensp;&ensp;   Features:
+
+   &ensp;&ensp;   Encrypt: You can select or drag a .txt file to encrypt.
+
+   &ensp;&ensp;   Decrypt: You can select or drag a .enc file to decrypt.
 
 ### Reference
 All the process follow spce P.5 (Procedure of Google CSE)
