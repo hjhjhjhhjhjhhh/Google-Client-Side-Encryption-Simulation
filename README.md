@@ -6,7 +6,7 @@
 - [x] 尤茂為
 - [x] 何存益
 - [x] 張育安
-- [ ] 蔡昌諭  
+- [x] 蔡昌諭  
 
 ### Temporary structure
 ```
