@@ -3,6 +3,10 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import base64
 import os
 
+# Load the same API key we generated
+with open("alice.txt","r") as f:
+    API_KEY = f.read().strip()
+
 def encrypt_file(input_path, output_path, key_path):
     with open(input_path, 'rb') as f:
         data = f.read()
@@ -44,11 +48,11 @@ def decrypt_file(input_path, output_path, key_path):
     print(f"Decrypted data saved to {output_path}")
 
 if __name__ == '__main__':
-    
+    # 1) locally encrypt
     encrypt_file('test.txt', 'test.enc', 'aes_key.bin')
-    data = {'user': 'an authorized user'}
-
-    response = requests.post('http://localhost:5000/get-key', json=data)
+    data = {'user': 'alice', 'key' : API_KEY} ## TODO change to other user
+    # 2) fetch wrapped key
+    response = requests.post('http://localhost:5000/get-key', json=data, headers={"X-API-Key": API_KEY})
 
     if response.status_code == 200:
         data = response.json()
