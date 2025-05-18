@@ -37,11 +37,11 @@
 5. User Authentication qr-code after registration
 - After registering successfully, access your authentication QR code at:
 
-Example: If your username is hello, visit http://localhost:5000/otp-qr/hello to scan the QR code.
+Example: Visit http://localhost:5000/otp-qr/{user_name} to scan the QR code.
 
 ### Reference
 All the process follow spec P.5 (Procedure of Google CSE)
 
 ### TO-DO
 - Currently kms server treats all the user as authorized user, need some other authentication.
-- After registration, the server will distribute KMS_API_KEY to user and record into kms_api_key.txt with {user : api_key}
+- Supports secure file sharing between users.
