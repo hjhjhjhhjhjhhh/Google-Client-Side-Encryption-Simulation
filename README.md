@@ -15,7 +15,7 @@
    &ensp;&ensp;&ensp; - The private is saved as `{user}_private.pem`.  
    &ensp;&ensp;&ensp; - The private is saved as `{user}_public.pem`.  
    &ensp;&ensp; `aes_keys` : Stores AES keys encrypted with the user's RSA public key.  
-   &ensp;&ensp;&ensp; - /store-key : Receives a base64-encoded AES key encrypted with the user's RSA public key, decodes and saves it as `{user}.bin`  
+   &ensp;&ensp;&ensp; - /store-key : Receives AES key encrypted with the user's RSA public key, decodes and saves it as `{user}.bin`  
    &ensp;&ensp;&ensp; - /get-key : Reads the encrypted AES key from `{user}.bin`, decrypts it using the user's RSA private key.  
 
 3. Create test.txt and add some content to it  
