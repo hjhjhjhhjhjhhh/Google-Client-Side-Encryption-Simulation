@@ -1,16 +1,21 @@
 # KMS_V1
 
 ### How to use
-1. Activate the server
+1. Generate user's aes key
+   ```sh
+   python kms_keygen.py
+   ```
+
+2. Activate the server
    ```sh
    python kms_server.py
    ```
 
-2. Create test.txt and add some content to it  
+3. Create test.txt and add some content to it  
    ```sh
    touch test.txt && echo "hello world" > test.txt
    ```
-3. Activate the client
+4. Activate the client
    ```sh
    python client.py
    ```
@@ -22,8 +27,13 @@
 
    &ensp;&ensp;   Decrypt: You can select or drag a .enc file to decrypt.
 
+5. User Authentication qr-code after registration
+- After registering successfully, access your authentication QR code at:
+
+Example: If your username is hello, visit http://localhost:5000/otp-qr/hello to scan the QR code.
+
 ### Reference
-All the process follow spce P.5 (Procedure of Google CSE)
+All the process follow spec P.5 (Procedure of Google CSE)
 
 ### TO-DO
 - Currently kms server treats all the user as authorized user, need some other authentication.
