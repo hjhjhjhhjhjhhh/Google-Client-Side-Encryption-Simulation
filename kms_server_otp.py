@@ -49,21 +49,16 @@ def require_api_key(fn):
         data = request.get_json()
         user = data.get("user", "").strip().lower()
         key = data.get("key", "").strip()
-        otp = data.get("otp", "").strip()
 
-        if not user or not key or not otp:
+        if not user or not key:
             abort(401, description="Missing credentials or OTP")
         
         expected_key = API_KEY.get(user)
         if not expected_key or expected_key != key:
             abort(401, description="Invalid API key")
-
-        otp_secret = load_otp_secret(user)
-        if not otp_secret or not pyotp.TOTP(otp_secret).verify(otp):
-            abort(401, description="Invalid or expired OTP")
-
         return fn(*args, **kwargs)
     return wrapped
+
 
 API_KEY = load_api_keys()
 
