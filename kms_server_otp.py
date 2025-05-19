@@ -166,6 +166,13 @@ def get_key():
 
     decrypted_key_b64 = base64.b64encode(decrypted_key).decode('utf-8')
     return jsonify({"decrypted_key": decrypted_key_b64})
+@app.route('/get-public-key/<user>', methods=['GET'])
+def get_public_key(user):
+    user = user.strip().lower()
+    pub_path = os.path.join(RSA_KEY_DIR, f"{user}_public.pem")
+    if not os.path.exists(pub_path):
+        return jsonify({"error": "Public key not found"}), 404
+    return send_file(pub_path, mimetype="application/x-pem-file")
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
