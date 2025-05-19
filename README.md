@@ -7,9 +7,9 @@
    ```
    &ensp;&ensp; This will produce `kms_private.pem` `kms_public.pem` and `kms_api_key.txt`
 
-2. Activate the server, this will generate two directories named `rsa_keys` and `aes_keys` 
+2. Activate the server, this will generate three directories named `rsa_keys`, `aes_keys`, and `otp_secrets` 
    ```sh
-   python kms_server.py
+   python kms_server_otp.py
    ```
    &ensp;&ensp; `rsa_keys` : Stores RSA key pairs generated during user registration via the /register endpoint.  
    &ensp;&ensp;&ensp; - The private is saved as `{user}_private.pem`.  
@@ -17,6 +17,10 @@
    &ensp;&ensp; `aes_keys` : Stores AES keys encrypted with the user's RSA public key.  
    &ensp;&ensp;&ensp; - /store-key : Receives AES key encrypted with the user's RSA public key, decodes and saves it as `{user}.bin`  
    &ensp;&ensp;&ensp; - /get-key : Reads the encrypted AES key from `{user}.bin`, decrypts it using the user's RSA private key.  
+   &ensp;&ensp; `otp_secrets` : Stores OTP secrets and generated QR codes for user authentication.  
+   &ensp;&ensp;&ensp; - During `/register` : Generates a TOTP secret for the user, saves it as `{user}.otp`, and creates a QR code `{user}_otp.png` for scanning with an authenticator app.  
+   &ensp;&ensp;&ensp; - OTP Verification : For endpoints requiring authentication, loads `{user}.otp` to validate the provided OTP code using TOTP.
+
 
 3. Create test.txt and add some content to it  
    ```sh
