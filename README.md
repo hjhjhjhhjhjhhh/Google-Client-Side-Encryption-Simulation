@@ -7,7 +7,26 @@
    ```
    &ensp;&ensp; This will produce `kms_private.pem` `kms_public.pem` and `kms_api_key.txt`
 
-2. Activate the server, this will generate three directories named `rsa_keys`, `aes_keys`, and `otp_secrets` 
+2. Start Cloud Storage Server
+   ```sh
+   python cloud_server.py
+   ```
+   Serves:
+
+   &ensp;&ensp;Upload API: /upload → Accepts .enc + .key files per user
+
+   &ensp;&ensp;File listing: /list/<user> → Lists files for the user
+
+   &ensp;&ensp;Download API: /download/<user>/<filename> → Downloads .enc or .key
+
+   Cloud files are stored in:
+   
+   ```sh
+   cloud/<username>/
+      ├── filename.enc
+      └── filename.key
+   ```
+3. Activate the server, this will generate three directories named `rsa_keys`, `aes_keys`, and `otp_secrets` 
    ```sh
    python kms_server_otp.py
    ```
@@ -22,11 +41,11 @@
    &ensp;&ensp;&ensp; - OTP Verification : For endpoints requiring authentication, loads `{user}.otp` to validate the provided OTP code using TOTP.
 
 
-3. Create test.txt and add some content to it  
+4. Create test.txt and add some content to it  
    ```sh
    touch test.txt && echo "hello world" > test.txt
    ```
-4. Activate the client
+5. Activate the client
    ```sh
    python client.py
    ```
@@ -38,7 +57,10 @@
 
    &ensp;&ensp;   Decrypt: You can select or drag a .enc file to decrypt.
 
-5. User Authentication qr-code after registration
+   &ensp;&ensp;   Upload: Upload encrypted file to cloud (.enc + KMS-encrypted .key)
+
+   &ensp;&ensp;   Download: Download the files from other users
+6. User Authentication qr-code after registration
 - After registering successfully, access your authentication QR code at:
 
 Example: Visit http://localhost:5000/otp-qr/{user_name} to scan the QR code.
