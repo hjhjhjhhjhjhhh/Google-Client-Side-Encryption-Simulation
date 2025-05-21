@@ -1,76 +1,73 @@
+# KMS_V1
 
-# Google-Client-Side-Encryption-Simulation  
+### How to use  
+1. Generate user's aes key once  
+   ```sh
+   python kms_keygen.py
+   ```
+   &ensp;&ensp; This will produce `kms_private.pem` `kms_public.pem` and `kms_api_key.txt`
 
-### Member (check: collaborator)
-- [x] 簡秉霖
-- [x] 尤茂為
-- [x] 何存益
-- [x] 張育安
-- [x] 蔡昌諭  
+2. Start Cloud Storage Server
+   ```sh
+   python cloud_server.py
+   ```
+   Serves:
 
-### Temporary structure
-```
-client/
-├── encrypt_file.py         # Encrypt file (AES-GCM), wrap key (RSA)
-├── decrypt_file.py         # Decrypt file using unwrapped AES key
-├── user_cert/              # Directory to store user certificate & private key
+   &ensp;&ensp;Upload API: /upload → Accepts .enc + .key files per user
 
-kms/
-├── app.py                  # Flask KMS API for key management
-├── acl.json                # Simple ACL configuration
-├── stored_keys/            # Directory to store encrypted keys for files
+   &ensp;&ensp;File listing: /list/<user> → Lists files for the user
 
-auth/
-├── generate_cert.py        # Generate certificate (RSA)
-├── otp_verify.py           # 2FA verification (PyOTP)
-├── issue_token.py          # Token issuance (JWT)
-```
+   &ensp;&ensp;Download API: /download/<user>/<filename> → Downloads .enc or .key
 
-### Key Pair Generation and Certificate Creation
+   Cloud files are stored in:
+   
+   ```sh
+   cloud/<username>/
+      ├── filename.enc
+      └── filename.key
+   ```
+3. Activate the server, this will generate three directories named `rsa_keys`, `aes_keys`, and `otp_secrets` 
+   ```sh
+   python kms_server_otp.py
+   ```
+   &ensp;&ensp; `rsa_keys` : Stores RSA key pairs generated during user registration via the /register endpoint.  
+   &ensp;&ensp;&ensp; - The private is saved as `{user}_private.pem`.  
+   &ensp;&ensp;&ensp; - The private is saved as `{user}_public.pem`.  
+   &ensp;&ensp; `aes_keys` : Stores AES keys encrypted with the user's RSA public key.  
+   &ensp;&ensp;&ensp; - /store-key : Receives AES key encrypted with the user's RSA public key, decodes and saves it as `{user}.bin`  
+   &ensp;&ensp;&ensp; - /get-key : Reads the encrypted AES key from `{user}.bin`, decrypts it using the user's RSA private key.  
+   &ensp;&ensp; `otp_secrets` : Stores OTP secrets and generated QR codes for user authentication.  
+   &ensp;&ensp;&ensp; - During `/register` : Generates a TOTP secret for the user, saves it as `{user}.otp`, and creates a QR code `{user}_otp.png` for scanning with an authenticator app.  
+   &ensp;&ensp;&ensp; - OTP Verification : For endpoints requiring authentication, loads `{user}.otp` to validate the provided OTP code using TOTP.
 
-> Generate public/private RSA key pairs for users. Public key will send to CA for certificate.
-> 
-- Execute auth/generate_cert.py to generate RSA key pair.
-    - create user_cert/user_private_key.pem and  user_cert/user_public_key.pem
-- KMS use user’s public key to encrypt the DEK and register the user
 
-### Client-Side Encryption of Files
+4. Create test.txt and add some content to it  
+   ```sh
+   touch test.txt && echo "hello world" > test.txt
+   ```
+5. Activate the client
+   ```sh
+   python client.py
+   ```
+   &ensp;&ensp; Upon launch, enter your name to register or login.
 
-- Encrypt the file locally before upload it to the KMS server. Encrypt the Data Encryption Key with user’s public key.
-> 
-- Execute client/encrypted_file.py to encrypt a file
-    - encrypte the file, generate encrypted_file
-    - DEK is encrypted with user’s public key
-    - encrypted file and wrapped DEK are uploaded to the KMS server
+   &ensp;&ensp;   Features:
 
-###  Key Management and Server Interaction (KMS)
+   &ensp;&ensp;   Encrypt: You can select or drag a .txt file to encrypt.
 
-> Manage encrypted files and wrapped DEKS, validate user, control access base on ACL
-> 
-- execute kms/app.py to start KMS Flash Server
-    - listens for requests to upload encrypted files and wrapped keys
-    - stores files and manages access through ACL
-- When user request for wrapped keys
-    - verifies user’s certificate and auth.
+   &ensp;&ensp;   Decrypt: You can select or drag a .enc file to decrypt.
 
-### User Authentication (OTP via Google Authenticator)
+   &ensp;&ensp;   Upload: Upload encrypted file to cloud (.enc + KMS-encrypted .key)
 
-> Authenticate users securely using **two-factor authentication (2FA)** before granting access to keys.
-> 
-- execute auth/otp_verify.py to generate OTP for user authentication
-- The system verify the OTP before allowing access to KMS server
+   &ensp;&ensp;   Download: Download the files from other users
+6. User Authentication qr-code after registration
+- After registering successfully, access your authentication QR code at:
 
-### Request Decryption Key from KMS
+Example: Visit http://localhost:5000/otp-qr/{user_name} to scan the QR code.
 
-> Request the wrapped key (DEK) from KMS using the user's certificate and authorization token
-> 
-- Execute client/request_key.py to send POST request to KMS server (/get-key endpoint)
-    - request include user’s certificate and authorication token
+### Reference
+All the process follow spec P.5 (Procedure of Google CSE)
 
-### Client-Side Decryption of the File
-
-> Decrypt the file using the decrypted DEK (received from KMS) on the client-side.
-> 
-- execute client/decrypted_file.py 
-    - first decrypt the wrapped DEK using user’s private RSA key
-    - second, use the decrypted DEK to decrypt the file
+### TO-DO
+- Currently kms server treats all the user as authorized user, need some other authentication.
+- Supports secure file sharing between users.
