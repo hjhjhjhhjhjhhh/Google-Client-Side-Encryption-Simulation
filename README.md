@@ -25,28 +25,28 @@ python client.py
 ## User Behavior (2 user)  
 ### Same User Encrypt Encrypt & Decrypt w/ Cloud  
 1. UserA encrypt fileA.txt
-2. Upload fileA.enc to cloud server, update the ACL list on kms server    
+2. Upload fileA.enc to cloud server, update the ACL on kms server    
 3. Download fileA.enc and obtain encrypted AES key
 4. Decrypt fileA.enc by the key decrypted by kms private key
 5. Success
 ### UserB fetch the fileA upload by UserA  
 1. UserA encrypt fileA.txt
-2. Upload fileA.enc to cloud server, update the ACL list on kms server  
-3. UserA granted UserB permission to access fileA (update ACL list)
+2. Upload fileA.enc to cloud server, update the ACL on kms server  
+3. UserA granted UserB permission to access fileA (update ACL)
 4. UserB requests fileA.enc of UserA from the cloud server.
 5. UserB pass the permission check, download fileA
 6. UserB decrypt fileA by the key obtain from cloud server
 7. Success
 ### UserB fetch the fileA upload by UserA (fail)  
 1. UserA encrypt fileA.txt
-2. Upload fileA.enc to cloud server, update the ACL list on kms server
+2. Upload fileA.enc to cloud server, update the ACL on kms server
 3. UserB requests fileA.enc of UserA from the cloud server.
 4. Since UserB is not on userA_fileA's ACL
 5. Permission Denied
 ## User Behavior (3 user)  
 1. UserA encrypt fileA.txt
-2. Upload fileA.enc to cloud server, update the ACL list on kms server
-3. UserA granted UserB, UserC permission to access fileA (update ACL list)
+2. Upload fileA.enc to cloud server, update the ACL on kms server
+3. UserA granted UserB, UserC permission to access fileA (update ACL)
 4. UserB, UserC requests fileA.enc of UserA from the cloud server  
 5. UserB, UserC pass the permission check, download fileA
 6. UserB, UserC decrypt fileA by the key obtain from cloud server
