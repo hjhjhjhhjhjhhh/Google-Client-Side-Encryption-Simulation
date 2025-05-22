@@ -1,4 +1,7 @@
 # DEMO  
+## Architecture  
+![CE-final_proj](https://github.com/user-attachments/assets/85f5cdde-66eb-4ea8-9e4a-46a257992dd6)
+
 ## Prerequisite    
 > Open three terminal  
 - Activate the cloud Server  
